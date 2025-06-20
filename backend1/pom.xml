@@ -11,7 +11,7 @@
 	<groupId>com.task-manager</groupId>
 	<artifactId>TaskManager</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>TaskManager</name>
 	<description>Task Manager Backend</description>
 	<url/>
