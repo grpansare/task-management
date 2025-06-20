@@ -1,7 +1,7 @@
 # Multi-stage build for smaller final image
 
 # Build stage
-FROM openjdk:17-jdk-slim AS builder
+FROM eclipse-temurin:17-jre AS builder
 
 WORKDIR /app
 
