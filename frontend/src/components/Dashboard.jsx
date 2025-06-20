@@ -130,6 +130,16 @@ const Dashboard = () => {
           priority: 'MEDIUM',
           dueDate: ''
         });
+
+           Swal.fire({
+                  icon: "success",
+                  title: "Task Added Successfully!",
+                  text: "Your task has been created.",
+                  timer: 2000,
+                  showConfirmButton: false,
+                  toast: true,
+                  position: "top-end",
+                });
         setIsFormExpanded(false);
         setTaskError('');
       } catch (error) {
