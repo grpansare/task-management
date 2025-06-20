@@ -19,3 +19,20 @@ COPY src ./src
 
 # Build the app
 RUN ./mvnw clean package -DskipTests
+
+# ---------- Runtime Stage ----------
+FROM eclipse-temurin:17-jre
+
+WORKDIR /app
+
+# Copy the jar from build stage
+COPY --from=builder /app/target/*.jar app.jar
+
+# Expose port (Render auto-detects this)
+EXPOSE 8080
+
+# Use environment variable for Render’s dynamic port
+ENV PORT=8080
+
+# Run the app
+CMD ["java", "-jar", "app.jar"]
