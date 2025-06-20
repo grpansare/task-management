@@ -1,36 +1,29 @@
-# Multi-stage build for smaller final image
-
-# Build stage
-FROM eclipse-temurin:17-jre AS builder
+# ---------- Build Stage ----------
+FROM eclipse-temurin:17-jdk as builder
 
 WORKDIR /app
 
-# Copy Maven wrapper and pom.xml
+# Copy Maven wrapper and pom.xml first (to leverage Docker cache)
 COPY mvnw .
-COPY mvnw.cmd .
-COPY pom.xml .
 COPY .mvn .mvn
+COPY pom.xml .
 
-# Make Maven wrapper executable
-RUN chmod +x ./mvnw
+# Pre-download dependencies
+RUN ./mvnw dependency:go-offline
 
-# Download dependencies
-RUN ./mvnw dependency:go-offline -B
-
-# Copy source code and build
+# Copy source code
 COPY src ./src
+
+# Build the app (without running tests)
 RUN ./mvnw clean package -DskipTests
 
-# Runtime stage
+# ---------- Runtime Stage ----------
 FROM eclipse-temurin:17-jre
 
 WORKDIR /app
 
-# Copy only the built jar from builder stage
+# Copy only the final jar from builder
 COPY --from=builder /app/target/*.jar app.jar
 
-# Expose port
-EXPOSE 8080
-
-# Run application
+# Run the app
 CMD ["java", "-jar", "app.jar"]
