@@ -22,7 +22,7 @@ COPY src ./src
 RUN ./mvnw clean package -DskipTests
 
 # Runtime stage
-FROM oeclipse-temurin:17-jre
+FROM eclipse-temurin:17-jre
 
 WORKDIR /app
 
