@@ -115,7 +115,7 @@ const Dashboard = () => {
       };
 
       try {
-        const response = await axios.post(`http://localhost:8080/api/tasks/${user.email}`, task, {
+        const response = await axios.post(`https://task-management-1-cdb4.onrender.com/api/tasks/${user.email}`, task, {
           headers: {
             Authorization: `Bearer ${user.token}`
           }
