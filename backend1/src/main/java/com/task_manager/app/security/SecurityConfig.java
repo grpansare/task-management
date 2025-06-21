@@ -51,7 +51,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         
         // ✅ Allow React Frontend URL
-        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        configuration.setAllowedOrigins(List.of("https://task-management-1-cdb4.onrender.com"));
         
         // ✅ Allow Headers
         configuration.setAllowedHeaders(List.of("*"));
