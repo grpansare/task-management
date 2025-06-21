@@ -44,7 +44,7 @@ const Register = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:8080/auth/register", {
+      const response = await axios.post("https://task-management-1-cdb4.onrender.com/auth/register", {
         username: formData.username,
         email: formData.email,
         password: formData.password,
