@@ -60,7 +60,7 @@ const TaskList = ({ tasks, setTasks, filter }) => {
   const updateTaskStatus = async (taskId, completed) => {
     try {
       const response = await axios.patch(
-        `http://localhost:8080/api/tasks/${taskId}/status`,
+        `https://task-management-1-cdb4.onrender.com/api/tasks/${taskId}/status`,
         { completed },
         {
           headers: {
@@ -90,7 +90,7 @@ const TaskList = ({ tasks, setTasks, filter }) => {
 
     if (result.isConfirmed) {
       try {
-        await axios.delete(`http://localhost:8080/api/tasks/${id}`, {
+        await axios.delete(`https://task-management-1-cdb4.onrender.com/api/tasks/${id}`, {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
@@ -151,7 +151,7 @@ const TaskList = ({ tasks, setTasks, filter }) => {
 
     try {
       const response = await axios.put(
-        `http://localhost:8080/api/tasks/${editingTask}`,
+        `https://task-management-1-cdb4.onrender.com/api/tasks/${editingTask}`,
         updatedTask,
         {
           headers: {
