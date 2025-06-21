@@ -86,7 +86,7 @@ const Dashboard = () => {
 
   const getTasks = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/tasks/${user.userid}`, {
+      const response = await axios.get(`https://task-management-1-cdb4.onrender.com/api/tasks/${user.userid}`, {
         headers: {
           Authorization: `Bearer ${user.token}`
         }
