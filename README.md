@@ -131,7 +131,7 @@ The backend will start on `http://localhost:8080`
 Navigate to the frontend directory:
 
 ```bash
-cd frontend1
+cd frontend
 ```
 
 Install dependencies:
@@ -205,7 +205,7 @@ CREATE TABLE tasks (
 ### Backend Testing
 
 ```bash
-cd backend
+cd backend1
 mvn test
 ```
 
@@ -222,7 +222,7 @@ yarn test
 
 1. **Register** a new account or **login** with existing credentials
 2. **Create tasks** with title, description, priority, and due date
-3. **Update task status** as you progress (Todo → In Progress → Completed)
+3. **Update task status** as you progress 
 4. **Filter and sort** tasks based on various criteria
 5. **Delete** completed or unnecessary tasks
 
