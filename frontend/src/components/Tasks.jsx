@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Edit2, Trash2, Save, X, Calendar } from "lucide-react";
 import { useAuth } from "../authcontext/AuthContext";
 import Swal from "sweetalert2";
-import { updateTaskStatus, deleteTaskById, updateTask } from "./taskApi"; // Import API functions
+import { updateTaskStatus, deleteTaskById, updateTask } from "./tasksApi.js"; // Import API functions
 
 const TaskList = ({ tasks, setTasks, filter }) => {
   const { user } = useAuth();
