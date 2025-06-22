@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Edit2, Trash2, Save, X, Calendar } from "lucide-react";
-import axios from "axios";
 import { useAuth } from "../authcontext/AuthContext";
 import Swal from "sweetalert2";
+import { updateTaskStatus, deleteTaskById, updateTask } from "./taskApi"; // Import API functions
 
 const TaskList = ({ tasks, setTasks, filter }) => {
   const { user } = useAuth();
@@ -18,7 +18,6 @@ const TaskList = ({ tasks, setTasks, filter }) => {
     const taskToUpdate = tasks.find((task) => task.id === id);
     const newCompletedStatus = !taskToUpdate.completed;
 
-    // Optimistically update the UI
     setTasks(
       tasks.map((task) =>
         task.id === id ? { ...task, completed: newCompletedStatus } : task
@@ -26,7 +25,7 @@ const TaskList = ({ tasks, setTasks, filter }) => {
     );
 
     try {
-      const updatedTask = await updateTaskStatus(id, newCompletedStatus);
+      const updatedTask = await updateTaskStatus(id, newCompletedStatus, user.token);
 
       setTasks(tasks.map((task) => (task.id === id ? updatedTask : task)));
 
@@ -42,7 +41,6 @@ const TaskList = ({ tasks, setTasks, filter }) => {
         position: "top-end",
       });
     } catch (error) {
-      // Revert the optimistic update on error
       setTasks(
         tasks.map((task) =>
           task.id === id ? { ...task, completed: !newCompletedStatus } : task
@@ -55,24 +53,6 @@ const TaskList = ({ tasks, setTasks, filter }) => {
         text: "Failed to update task status. Please try again.",
         confirmButtonColor: "#8B5CF6",
       });
-    }
-  };
-  const updateTaskStatus = async (taskId, completed) => {
-    try {
-      const response = await axios.patch(
-        `https://task-management-1-cdb4.onrender.com/api/tasks/${taskId}/status`,
-        { completed },
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      return response.data;
-    } catch (error) {
-      console.error("Error updating task status:", error);
-      throw error;
     }
   };
 
@@ -90,11 +70,7 @@ const TaskList = ({ tasks, setTasks, filter }) => {
 
     if (result.isConfirmed) {
       try {
-        await axios.delete(`https://task-management-1-cdb4.onrender.com/api/tasks/${id}`, {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        });
+        await deleteTaskById(id, user.token);
         setTasks(tasks.filter((task) => task.id !== id));
 
         Swal.fire({
@@ -107,7 +83,6 @@ const TaskList = ({ tasks, setTasks, filter }) => {
           position: "top-end",
         });
       } catch (error) {
-        console.error("Error deleting task:", error);
         Swal.fire({
           icon: "error",
           title: "Error!",
@@ -146,20 +121,11 @@ const TaskList = ({ tasks, setTasks, filter }) => {
       description: editForm.description.trim(),
       priority: editForm.priority,
       dueDate: editForm.dueDate,
-      completed: currentTask.completed, // Preserve the current completed status
+      completed: currentTask.completed,
     };
 
     try {
-      const response = await axios.put(
-        `https://task-management-1-cdb4.onrender.com/api/tasks/${editingTask}`,
-        updatedTask,
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
-      );
-      const updated = response.data;
+      const updated = await updateTask(editingTask, updatedTask, user.token);
 
       setTasks(tasks.map((task) => (task.id === editingTask ? updated : task)));
 
@@ -181,7 +147,6 @@ const TaskList = ({ tasks, setTasks, filter }) => {
         position: "top-end",
       });
     } catch (error) {
-      console.error("Error editing task:", error);
       Swal.fire({
         icon: "error",
         title: "Update Failed",
@@ -212,6 +177,9 @@ const TaskList = ({ tasks, setTasks, filter }) => {
       );
     }
     return true;
+  }).sort((a, b) => {
+    const priorityOrder = { HIGH: 3, MEDIUM: 2, LOW: 1 };
+    return priorityOrder[b.priority] - priorityOrder[a.priority];
   });
 
   const getPriorityColor = (priority) => {
