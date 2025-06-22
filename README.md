@@ -199,7 +199,6 @@ CREATE TABLE tasks (
 - **Password Encryption**: BCrypt hashing for secure password storage
 - **CORS Configuration**: Proper cross-origin resource sharing setup
 - **Request Validation**: Input validation and sanitization
-- **Role-based Authorization**: Different access levels for different user roles
 
 ## 🧪 Testing
 
