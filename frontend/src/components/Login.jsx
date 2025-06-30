@@ -17,8 +17,13 @@ const Login = () => {
   const [touched, setTouched] = useState({});
   const [loading, setLoading] = useState(false);
 
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const navigate = useNavigate();
+  useEffect(() => {
+    if (user?.token) {
+      navigate("/dashboard");
+    }
+  }, [user, navigate]);
 
   const validateField = (field, value) => {
     switch (field) {
